@@ -1,0 +1,33 @@
+trigger: none
+
+pr:
+  - master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: 'eShopOnWeb.sln'
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'restore nuget packages'
+    inputs:
+      command: 'restore'
+      projects: '**/*.csproj'
+      feedsToUse: 'select'
+  - task: DotNetCoreCLI@2
+    displayName: 'build solution'
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+  - task: DotNetCoreCLI@2
+    displayName: 'run unit tests'
+    inputs:
+      command: 'test'
+      projects: 'tests/UnitTests/*.csproj'
+  - task: DotNetCoreCLI@2
+    displayName: 'run integration tests'
+    inputs:
+      command: 'test'
+      projects: 'tests/IntegrationTests/*.csproj'
