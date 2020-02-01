@@ -1,6 +1,8 @@
 trigger:
 - master
 
+pr: none
+
 pool:
   vmImage: 'windows-latest'
 
@@ -23,15 +25,28 @@ stages:
             inputs:
               command: 'build'
               projects: '**/*.csproj'
-              configuration: $(buildConfiguration)
+              arguments: '--configuration $(buildConfiguration)'
           - task: DotNetCoreCLI@2
             displayName: 'run unit tests'
             inputs:
               command: 'test'
               projects: 'tests/UnitTests/*.csproj'
+              arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
           - task: DotNetCoreCLI@2
             displayName: 'run integration tests'
             inputs:
               command: 'test'
               projects: 'tests/IntegrationTests/*.csproj'
+              arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: publish
+              publishWebProjects: True
+              arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+              zipAfterPublish: True
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+              artifactName: 'eshoponweb-site'
+          
 
