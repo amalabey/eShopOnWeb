@@ -39,15 +39,22 @@ stages:
               projects: 'tests/IntegrationTests/*.csproj'
               arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
           - task: DotNetCoreCLI@2
+            displayName: 'package web-site'
             inputs:
               command: publish
               publishWebProjects: True
               arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
               zipAfterPublish: True
           - task: PublishBuildArtifacts@1
+            displayName: 'publish web-site'
             inputs:
               pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
               artifactName: 'eshoponweb-site'
+          - task: PublishBuildArtifacts@1
+            displayName: 'publish iac'
+            inputs:
+              pathtoPublish: '$(System.DefaultWorkingDirectory)\iac' 
+              artifactName: 'eshoponweb-iac'
   - stage: 'Deployment'
     jobs:
       - deployment: 'deploy'
@@ -56,11 +63,15 @@ stages:
           runOnce:
             deploy:
               steps:
+              - download: current
+                artifact: eshoponweb-iac
+              - download: current
+                artifact: eshoponweb-site
               - task: AzureCLI@2
                 displayName: 'provision azure resources'
                 inputs:
                   azureSubscription: 'azure-vs-enterprise'
                   scriptType: 'pscore'
                   scriptLocation: 'scriptPath'
-                  scriptPath: '$(System.DefaultWorkingDirectory)\iac\provision-azure-resources.ps1'
+                  scriptPath: '$(System.DefaultWorkingDirectory)\eshoponweb-iac\provision-azure-resources.ps1'
                   arguments: '-Environment $(Environment.Name)'
