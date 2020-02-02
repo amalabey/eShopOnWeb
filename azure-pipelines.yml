@@ -48,7 +48,7 @@ stages:
             inputs:
               pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
               artifactName: 'eshoponweb-site'
-  - stage: 'DEV_Deployment'
+  - stage: 'Deployment'
     jobs:
       - deployment: 'deploy'
         environment: 'aadev'
