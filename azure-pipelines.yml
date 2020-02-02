@@ -39,12 +39,14 @@ stages:
               projects: 'tests/IntegrationTests/*.csproj'
               arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
           - task: DotNetCoreCLI@2
+            displayName: 'publish website'
             inputs:
               command: publish
               publishWebProjects: True
               arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
               zipAfterPublish: True
           - task: PublishBuildArtifacts@1
+            displayName: 'publish artefacts'
             inputs:
               pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
               artifactName: 'eshoponweb-site'
