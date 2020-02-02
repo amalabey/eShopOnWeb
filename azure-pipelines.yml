@@ -64,8 +64,10 @@ stages:
             deploy:
               steps:
               - download: current
+                displayName: 'download eshoponweb-iac'
                 artifact: eshoponweb-iac
               - download: current
+                displayName: 'download eshoponweb-site'
                 artifact: eshoponweb-site
               - task: AzureCLI@2
                 displayName: 'provision azure resources'
@@ -73,5 +75,5 @@ stages:
                   azureSubscription: 'azure-vs-enterprise'
                   scriptType: 'pscore'
                   scriptLocation: 'scriptPath'
-                  scriptPath: '$(System.DefaultWorkingDirectory)\eshoponweb-iac\provision-azure-resources.ps1'
+                  scriptPath: '$(Pipeline.Workspace)\eshoponweb-iac\provision-azure-resources.ps1'
                   arguments: '-Environment $(Environment.Name)'
