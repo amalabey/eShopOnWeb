@@ -50,14 +50,17 @@ stages:
               artifactName: 'eshoponweb-site'
   - stage: 'DEV_Deployment'
     jobs:
-      - job: 'deploy'
-        variables:
-          environmentName: 'aadev'
-        steps:
-          - task: AzureCLI@2
-            inputs:
-              azureSubscription: 'azure-vs-enterprise'
-              scriptType: 'pscore'
-              scriptLocation: 'scriptPath'
-              scriptPath: '$(System.DefaultWorkingDirectory)\iac\provision-azure-resources.ps1'
-              arguments: '-Environment $(environmentName)'
+      - deployment: 'deploy'
+        environment: 'aadev'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+              - task: AzureCLI@2
+                displayName: 'provision azure resources'
+                inputs:
+                  azureSubscription: 'azure-vs-enterprise'
+                  scriptType: 'pscore'
+                  scriptLocation: 'scriptPath'
+                  scriptPath: '$(System.DefaultWorkingDirectory)\iac\provision-azure-resources.ps1'
+                  arguments: '-Environment $(Environment.Name)'
