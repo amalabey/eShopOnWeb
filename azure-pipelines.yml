@@ -77,10 +77,3 @@ stages:
                   scriptLocation: 'scriptPath'
                   scriptPath: '$(Pipeline.Workspace)\eshoponweb-iac\provision-azure-resources.ps1'
                   arguments: '-Environment $(Environment.Name)'
-              - task: AzureWebApp@1
-                displayName: 'deploy azure appservice'
-                inputs:
-                  appType: webApp
-                  azureSubscription: 'azure-vs-enterprise'
-                  appName: 'eshoponweb-aadev-as'
-                  package: $(Pipeline.Workspace)/eshoponweb-site/*.zip
