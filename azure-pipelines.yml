@@ -58,8 +58,6 @@ stages:
   - stage: 'Deployment'
     jobs:
       - deployment: 'deploy'
-        variables:
-          - group: 'aadev-configuration'
         environment: 'aadev'
         strategy:
           runOnce:
