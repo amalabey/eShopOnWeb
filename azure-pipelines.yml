@@ -84,4 +84,3 @@ stages:
                   azureSubscription: 'azure-vs-enterprise'
                   appName: 'eshoponweb-aadev-as'
                   package: $(Pipeline.Workspace)/eshoponweb-site/*.zip
-                  appSettings: '-ConnectionStrings.CatalogConnection $(eshoponwebdbpwd)'
