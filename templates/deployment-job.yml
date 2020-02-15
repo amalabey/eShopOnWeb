@@ -6,8 +6,8 @@ parameters:
 jobs:
   - deployment: 'deploy'
     variables:
-      - group: '${{ environmentName }}-settings'
-    environment: '${{ environmentName }}'
+      - group: '${{ parameters.environmentName }}-settings' # Expect a variable group with envrionment-settings that includes all variables
+    environment: '${{ parameters.environmentName }}'
     strategy:
       runOnce:
         deploy:
@@ -21,16 +21,16 @@ jobs:
           - task: AzureCLI@2
             displayName: 'provision azure resources'
             inputs:
-              azureSubscription: '${{ azureSubscription }}'
+              azureSubscription: '${{ parameters.azureSubscription }}'
               scriptType: 'pscore'
               scriptLocation: 'scriptPath'
               scriptPath: '$(Pipeline.Workspace)\eshoponweb-iac\provision-azure-resources.ps1'
-              arguments: '-Environment ${{ environmentName }}'
+              arguments: '-Environment ${{ parameters.environmentName }}'
           - task: AzureWebApp@1
             displayName: 'deploy azure appservice'
             inputs:
               appType: webApp
               azureSubscription: 'azure-vs-enterprise'
-              appName: 'eshoponweb-aadev-as'
+              appName: 'eshoponweb-${{ parameters.environmentName }}-as'
               package: $(Pipeline.Workspace)/eshoponweb-site/*.zip
-              appSettings: '-ConnectionStrings.CatalogConnection ${{ connectionString }}'
+              appSettings: '-ConnectionStrings.CatalogConnection $(connectionString)'
