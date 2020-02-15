@@ -17,6 +17,8 @@ stages:
           - template: templates/build-steps.yml
             parameters:
               buildConfiguration: 'Release'
+          - script: 'dotnet ef migrations script -c catalogcontext -p src/Infrastructure/Infrastructure.csproj -s src/Web/Web.csproj -i -o $(System.DefaultWorkingDirectory)/sql/catalogdb.sql'
+          - script: 'dotnet ef migrations script -c appidentitydbcontext -p src/Infrastructure/Infrastructure.csproj -s src/Web/Web.csproj -i -o $(System.DefaultWorkingDirectory)/sql/identitydb.sql'
           - task: DotNetCoreCLI@2
             displayName: 'package web-site'
             inputs:
@@ -34,6 +36,11 @@ stages:
             inputs:
               pathtoPublish: '$(System.DefaultWorkingDirectory)\scripts' 
               artifactName: 'eshoponweb-scripts'
+          - task: PublishBuildArtifacts@1
+            displayName: 'publish sql'
+            inputs:
+              pathtoPublish: '$(System.DefaultWorkingDirectory)\sql' 
+              artifactName: 'eshoponweb-sql'
   - stage: 'Staging'
     jobs:
       - template: templates/deployment-job.yml
