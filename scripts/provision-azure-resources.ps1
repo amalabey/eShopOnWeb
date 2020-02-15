@@ -14,7 +14,7 @@ param (
     $SqlAdminPassword
 )
 
-$ErrorActionPreference = "Stop"
+$ErrorPreference='Stop'
 
 # Create/ensure resource group
 Write-Host "Create/ensure resource group"

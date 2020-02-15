@@ -35,7 +35,7 @@ jobs:
               AuthenticationType: 'connectionString'
               ConnectionString: '$(catalogConnectionString)'
               deployType: 'SqlTask'
-              SqlFile: 'sql\catalogdb.sql'
+              SqlFile: '$(Pipeline.Workspace)/eshoponweb-sql/catalogdb.sql'
               IpDetectionMethod: 'AutoDetect'
           - task: SqlAzureDacpacDeployment@1
             inputs:
@@ -43,7 +43,7 @@ jobs:
               AuthenticationType: 'connectionString'
               ConnectionString: '$(identityConnectionString)'
               deployType: 'SqlTask'
-              SqlFile: 'sql\identitydb.sql'
+              SqlFile: '$(Pipeline.Workspace)/eshoponweb-sql/identitydb.sql'
               IpDetectionMethod: 'AutoDetect'
           - task: AzureWebApp@1
             displayName: 'deploy azure appservice'
