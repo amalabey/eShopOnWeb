@@ -55,35 +55,10 @@ stages:
             inputs:
               pathtoPublish: '$(System.DefaultWorkingDirectory)\iac' 
               artifactName: 'eshoponweb-iac'
-  - stage: 'Deployment'
+  - stage: 'Staging'
     jobs:
-      - deployment: 'deploy'
-        variables:
-          - group: 'aadev-configuration'
-        environment: 'aadev'
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-              - download: current
-                displayName: 'download eshoponweb-iac'
-                artifact: eshoponweb-iac
-              - download: current
-                displayName: 'download eshoponweb-site'
-                artifact: eshoponweb-site
-              - task: AzureCLI@2
-                displayName: 'provision azure resources'
-                inputs:
-                  azureSubscription: 'azure-vs-enterprise'
-                  scriptType: 'pscore'
-                  scriptLocation: 'scriptPath'
-                  scriptPath: '$(Pipeline.Workspace)\eshoponweb-iac\provision-azure-resources.ps1'
-                  arguments: '-Environment $(Environment.Name)'
-              - task: AzureWebApp@1
-                displayName: 'deploy azure appservice'
-                inputs:
-                  appType: webApp
-                  azureSubscription: 'azure-vs-enterprise'
-                  appName: 'eshoponweb-aadev-as'
-                  package: $(Pipeline.Workspace)/eshoponweb-site/*.zip
-                  appSettings: '-ConnectionStrings.CatalogConnection $(eshoponwebdbpwd)'
+      - template: templates/deployment-job.yml
+        parameters:
+          environmentName: 'staging'
+          azureSubscription: 'azure-vs-enterprise'
+          
