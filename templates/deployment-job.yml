@@ -14,7 +14,7 @@ jobs:
           steps:
           - download: current
             displayName: 'download eshoponweb-iac'
-            artifact: eshoponweb-iac
+            artifact: eshoponweb-scripts
           - download: current
             displayName: 'download eshoponweb-site'
             artifact: eshoponweb-site
@@ -24,7 +24,7 @@ jobs:
               azureSubscription: '${{ parameters.azureSubscription }}'
               scriptType: 'pscore'
               scriptLocation: 'scriptPath'
-              scriptPath: '$(Pipeline.Workspace)\eshoponweb-iac\provision-azure-resources.ps1'
+              scriptPath: '$(Pipeline.Workspace)\eshoponweb-scripts\provision-azure-resources.ps1'
               arguments: '-Environment ${{ parameters.environmentName }}'
           - task: AzureWebApp@1
             displayName: 'deploy azure appservice'

@@ -53,8 +53,8 @@ stages:
           - task: PublishBuildArtifacts@1
             displayName: 'publish iac'
             inputs:
-              pathtoPublish: '$(System.DefaultWorkingDirectory)\iac' 
-              artifactName: 'eshoponweb-iac'
+              pathtoPublish: '$(System.DefaultWorkingDirectory)\scripts' 
+              artifactName: 'eshoponweb-scripts'
   - stage: 'Staging'
     jobs:
       - template: templates/deployment-job.yml
