@@ -1,5 +1,6 @@
 parameters:
   - name: buildConfiguration
+    type: string
 steps:
   - task: DotNetCoreCLI@2
     displayName: 'restore nuget packages'

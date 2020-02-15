@@ -16,7 +16,7 @@ stages:
         steps:
           - template: templates/build-steps.yml
             parameters:
-              buildConfiguration: ${{ buildConfiguration }}
+              buildConfiguration: '${{ buildConfiguration }}'
           - task: DotNetCoreCLI@2
             displayName: 'package web-site'
             inputs:
