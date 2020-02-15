@@ -49,7 +49,7 @@ jobs:
             displayName: 'deploy azure appservice'
             inputs:
               appType: webApp
-              azureSubscription: 'azure-vs-enterprise'
+              azureSubscription: '${{ parameters.azureSubscription }}'
               appName: 'eshoponweb-${{ parameters.environmentName }}-as'
               package: $(Pipeline.Workspace)/eshoponweb-site/*.zip
               appSettings: '-ConnectionStrings.CatalogConnection $(catalogConnectionString) -ConnectionStrings.IdentityConnection $(identityConnectionString)'
