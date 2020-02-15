@@ -22,13 +22,15 @@ stages:
             displayName: 'generate catalogdb sql'
             inputs:
               command: 'custom'
-              arguments: 'ef migrations script -c catalogcontext -p $(System.DefaultWorkingDirectory)\src\Infrastructure\Infrastructure.csproj -s $(System.DefaultWorkingDirectory)\src\Web\Web.csproj -i -o $(System.DefaultWorkingDirectory)\sql\catalogdb.sql'
+              custom: 'ef'
+              arguments: 'migrations script -c catalogcontext -p $(System.DefaultWorkingDirectory)\src\Infrastructure\Infrastructure.csproj -s $(System.DefaultWorkingDirectory)\src\Web\Web.csproj -i -o $(System.DefaultWorkingDirectory)\sql\catalogdb.sql'
           #- script: 'dotnet ef migrations script -c appidentitydbcontext -p src/Infrastructure/Infrastructure.csproj -s src/Web/Web.csproj -i -o $(System.DefaultWorkingDirectory)/sql/identitydb.sql'
           - task: DotNetCoreCLI@2
             displayName: 'generate identitydb sql'
             inputs:
               command: 'custom'
-              arguments: 'ef migrations script -c appidentitydbcontext -p $(System.DefaultWorkingDirectory)\src\Infrastructure\Infrastructure.csproj -s $(System.DefaultWorkingDirectory)\src\Web\Web.csproj -i -o $(System.DefaultWorkingDirectory)\sql\identitydb.sql'
+              custom: 'ef'
+              arguments: 'migrations script -c appidentitydbcontext -p $(System.DefaultWorkingDirectory)\src\Infrastructure\Infrastructure.csproj -s $(System.DefaultWorkingDirectory)\src\Web\Web.csproj -i -o $(System.DefaultWorkingDirectory)\sql\identitydb.sql'
           - task: DotNetCoreCLI@2
             displayName: 'package web-site'
             inputs:

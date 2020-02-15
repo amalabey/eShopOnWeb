@@ -18,6 +18,9 @@ jobs:
           - download: current
             displayName: 'download eshoponweb-site'
             artifact: eshoponweb-site
+          - download: current
+            displayName: 'download eshoponweb-sql'
+            artifact: eshoponweb-sql
           - task: AzureCLI@2
             displayName: 'provision azure resources'
             inputs:
@@ -26,6 +29,22 @@ jobs:
               scriptLocation: 'scriptPath'
               scriptPath: '$(Pipeline.Workspace)\eshoponweb-scripts\provision-azure-resources.ps1' # will set connection strings to variables
               arguments: '-Environment ${{ parameters.environmentName }}'
+          - task: SqlAzureDacpacDeployment@1
+            inputs:
+              azureSubscription: '${{ parameters.azureSubscription }}'
+              AuthenticationType: 'connectionString'
+              ConnectionString: '$(catalogConnectionString)'
+              deployType: 'SqlTask'
+              SqlFile: 'sql\catalogdb.sql'
+              IpDetectionMethod: 'AutoDetect'
+          - task: SqlAzureDacpacDeployment@1
+            inputs:
+              azureSubscription: '${{ parameters.azureSubscription }}'
+              AuthenticationType: 'connectionString'
+              ConnectionString: '$(identityConnectionString)'
+              deployType: 'SqlTask'
+              SqlFile: 'sql\identitydb.sql'
+              IpDetectionMethod: 'AutoDetect'
           - task: AzureWebApp@1
             displayName: 'deploy azure appservice'
             inputs:
