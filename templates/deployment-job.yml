@@ -53,4 +53,4 @@ jobs:
               appType: 'webApp'
               package: $(Pipeline.Workspace)/eshoponweb-site/*.zip
               appSettings: '-ConnectionStrings.CatalogConnection "$(catalogConnectionString)" -ConnectionStrings.IdentityConnection "$(identityConnectionString)"'
-              deploymentMethod: 'auto'
+              deploymentMethod: 'zipDeploy'
