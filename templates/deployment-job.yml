@@ -6,6 +6,7 @@ parameters:
 jobs:
   - deployment: 'deploy'
     variables:
+      - system.debug: 'true'
       - group: '${{ parameters.environmentName }}-settings' # Expect a variable group with envrionment-settings that includes all variables
     environment: '${{ parameters.environmentName }}'
     strategy:
@@ -52,4 +53,4 @@ jobs:
               azureSubscription: '${{ parameters.azureSubscription }}'
               appName: 'eshoponweb-${{ parameters.environmentName }}-as'
               package: $(Pipeline.Workspace)/eshoponweb-site/*.zip
-              appSettings: '-ConnectionStrings.CatalogConnection $(catalogConnectionString) -ConnectionStrings.IdentityConnection $(identityConnectionString)'
+              appSettings: '-ConnectionStrings.CatalogConnection "$(catalogConnectionString)" -ConnectionStrings.IdentityConnection "$(identityConnectionString)"'
