@@ -24,7 +24,7 @@ jobs:
               azureSubscription: '${{ parameters.azureSubscription }}'
               scriptType: 'pscore'
               scriptLocation: 'scriptPath'
-              scriptPath: '$(Pipeline.Workspace)\eshoponweb-scripts\provision-azure-resources.ps1'
+              scriptPath: '$(Pipeline.Workspace)\eshoponweb-scripts\provision-azure-resources.ps1' # will set connection strings to variables
               arguments: '-Environment ${{ parameters.environmentName }}'
           - task: AzureWebApp@1
             displayName: 'deploy azure appservice'
@@ -33,4 +33,4 @@ jobs:
               azureSubscription: 'azure-vs-enterprise'
               appName: 'eshoponweb-${{ parameters.environmentName }}-as'
               package: $(Pipeline.Workspace)/eshoponweb-site/*.zip
-              appSettings: '-ConnectionStrings.CatalogConnection $(connectionString)'
+              appSettings: '-ConnectionStrings.CatalogConnection $(catalogConnectionString) -ConnectionStrings.IdentityConnection $(identityConnectionString)'
