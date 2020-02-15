@@ -6,7 +6,7 @@ parameters:
 jobs:
   - deployment: 'deploy'
     variables:
-      - group: '${{ variableGroupName }}-settings'
+      - group: '${{ environmentName }}-settings'
     environment: '${{ environmentName }}'
     strategy:
       runOnce:
