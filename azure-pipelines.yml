@@ -17,14 +17,18 @@ stages:
           - template: templates/build-steps.yml
             parameters:
               buildConfiguration: $(buildConfiguration)
-          #- script: 'dotnet ef migrations script -c catalogcontext -p $(System.DefaultWorkingDirectory)\src\Infrastructure\Infrastructure.csproj -s $(System.DefaultWorkingDirectory)\src\Web\Web.csproj -i -o $(System.DefaultWorkingDirectory)\sql\catalogdb.sql'
+          - task: DotNetCoreCLI@2
+            displayName: 'install ef tool'
+            inputs:
+              command: 'custom'
+              custom: 'tool'
+              arguments: 'install --global dotnet-ef'
           - task: DotNetCoreCLI@2
             displayName: 'generate catalogdb sql'
             inputs:
               command: 'custom'
               custom: 'ef'
               arguments: 'migrations script -c catalogcontext -p $(System.DefaultWorkingDirectory)\src\Infrastructure\Infrastructure.csproj -s $(System.DefaultWorkingDirectory)\src\Web\Web.csproj -i -o $(System.DefaultWorkingDirectory)\sql\catalogdb.sql'
-          #- script: 'dotnet ef migrations script -c appidentitydbcontext -p src/Infrastructure/Infrastructure.csproj -s src/Web/Web.csproj -i -o $(System.DefaultWorkingDirectory)/sql/identitydb.sql'
           - task: DotNetCoreCLI@2
             displayName: 'generate identitydb sql'
             inputs:

@@ -28,7 +28,7 @@ jobs:
               scriptType: 'pscore'
               scriptLocation: 'scriptPath'
               scriptPath: '$(Pipeline.Workspace)\eshoponweb-scripts\provision-azure-resources.ps1' # will set connection strings to variables
-              arguments: '-Environment ${{ parameters.environmentName }}'
+              arguments: '-Environment ${{ parameters.environmentName }} -SqlAdminUserName $(SqlAdminUserName) -SqlAdminPassword $(SqlAdminPassword)'
           - task: SqlAzureDacpacDeployment@1
             inputs:
               azureSubscription: '${{ parameters.azureSubscription }}'
