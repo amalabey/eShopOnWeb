@@ -37,15 +37,6 @@ namespace Microsoft.eShopWeb.Web
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            // use in-memory database
-            ConfigureInMemoryDatabases(services);
-
-            // use real database
-            //ConfigureProductionServices(services);
-        }
-
         private void ConfigureInMemoryDatabases(IServiceCollection services)
         {
             // use in-memory database
@@ -55,11 +46,9 @@ namespace Microsoft.eShopWeb.Web
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("Identity"));
-
-            ConfigureServices(services);
         }
 
-        public void ConfigureProductionServices(IServiceCollection services)
+        private void ConfigureProductionServices(IServiceCollection services)
         {
             // use real database
             // Requires LocalDB which can be installed with SQL Server Express 2016
@@ -70,8 +59,6 @@ namespace Microsoft.eShopWeb.Web
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
-
-            ConfigureServices(services);
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
@@ -137,7 +124,7 @@ namespace Microsoft.eShopWeb.Web
                 config.Path = "/allservices";
             });
 
-            ConfigureDevelopmentServices(services);
+            ConfigureProductionServices(services);
 
             _services = services; // used to debug registered services
         }
