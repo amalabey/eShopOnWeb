@@ -16,7 +16,7 @@ stages:
         steps:
           - template: templates/build-steps.yml
             parameters:
-              buildConfiguration: 'Release'
+              buildConfiguration: $(buildConfiguration)
           - script: 'dotnet ef migrations script -c catalogcontext -p src/Infrastructure/Infrastructure.csproj -s src/Web/Web.csproj -i -o $(System.DefaultWorkingDirectory)/sql/catalogdb.sql'
           - script: 'dotnet ef migrations script -c appidentitydbcontext -p src/Infrastructure/Infrastructure.csproj -s src/Web/Web.csproj -i -o $(System.DefaultWorkingDirectory)/sql/identitydb.sql'
           - task: DotNetCoreCLI@2
@@ -24,7 +24,7 @@ stages:
             inputs:
               command: publish
               publishWebProjects: True
-              arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+              arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
               zipAfterPublish: True
           - task: PublishBuildArtifacts@1
             displayName: 'publish web-site'
