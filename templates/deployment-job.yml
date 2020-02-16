@@ -45,12 +45,20 @@ jobs:
               deployType: 'SqlTask'
               SqlFile: '$(Pipeline.Workspace)/eshoponweb-sql/identitydb.sql'
               IpDetectionMethod: 'AutoDetect'
-          - task: AzureWebApp@1
-            displayName: 'deploy azure appservice'
-            inputs:
-              azureSubscription: '${{ parameters.azureSubscription }}'
-              appName: 'eshoponweb-${{ parameters.environmentName }}-as'
-              package: $(Pipeline.Workspace)/eshoponweb-site/Web.zip
-              appSettings: '-ConnectionStrings.CatalogConnection "$(catalogConnectionString)" -ConnectionStrings.IdentityConnection "$(identityConnectionString)"'
-              deploymentMethod: 'runFromPackage'
-              enableCustomDeployment: true
+          # - task: AzureWebApp@1
+          #   displayName: 'deploy azure appservice'
+          #   inputs:
+          #     azureSubscription: '${{ parameters.azureSubscription }}'
+          #     appName: 'eshoponweb-${{ parameters.environmentName }}-as'
+          #     package: $(Pipeline.Workspace)/eshoponweb-site/Web.zip
+          #     appSettings: '-ConnectionStrings.CatalogConnection "$(catalogConnectionString)" -ConnectionStrings.IdentityConnection "$(identityConnectionString)"'
+          #     deploymentMethod: 'runFromPackage'
+          #     enableCustomDeployment: true
+          - task: AzureRmWebAppDeployment@4
+              inputs:
+                ConnectionType: 'AzureRM'
+                azureSubscription: '${{ parameters.azureSubscription }}'
+                appType: 'webApp'
+                WebAppName: 'eshoponweb-${{ parameters.environmentName }}-as'
+                packageForLinux: '$(Pipeline.Workspace)/eshoponweb-site/Web.zip'
+                AppSettings: '-ConnectionStrings.CatalogConnection "$(catalogConnectionString)" -ConnectionStrings.IdentityConnection "$(identityConnectionString)"'
