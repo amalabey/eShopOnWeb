@@ -50,7 +50,7 @@ jobs:
             inputs:
               azureSubscription: '${{ parameters.azureSubscription }}'
               appName: 'eshoponweb-${{ parameters.environmentName }}-as'
-              package: $(Pipeline.Workspace)/eshoponweb-site/*.zip
-              appSettings: '-ConnectionStrings.CatalogConnection "$(catalogConnectionString)" -ConnectionStrings.IdentityConnection "$(identityConnectionString)"'
+              package: $(Pipeline.Workspace)/eshoponweb-site/Web.zip
+              #appSettings: '-ConnectionStrings.CatalogConnection "$(catalogConnectionString)" -ConnectionStrings.IdentityConnection "$(identityConnectionString)"'
               deploymentMethod: 'runFromPackage'
               enableCustomDeployment: true
