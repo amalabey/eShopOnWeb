@@ -1,0 +1,98 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "keyVaultSubscriptionId": {
+      "type": "string",
+      "metadata": {
+        "description": "Id of the subscription where the cert keyvault is on"
+      }
+    },
+    "keyVaultResourceGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the resource group where the keyvault is"
+      }
+    },
+    "keyVaultName": {
+      "type": "string",
+      "metadata": {
+        "description": "KeyVault where the ssl cert is stored"
+      }
+    },    
+    "existingKeyVaultSecretName": {
+      "type": "string",
+      "metadata": {
+        "description": "Key Vault Secret that contains a PFX certificate"
+      }
+    },
+    "environmentName": {
+      "type": "string",
+      "metadata": {
+        "description": "Environment name"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Location for all resources."
+      }
+    },
+    "sku":{
+      "type": "string",
+      "defaultValue" : "S1",
+      "metadata": {
+        "description": "The SKU of App Service Plan, by default is Standard S1"
+      }
+    }
+  },
+  "variables":{
+      "appServicePlanName": "[concat('eshoponweb-', toLower(parameters('environmentName')), '-asp')]",
+      "appServiceName": "[concat('eshoponweb-', toLower(parameters('environmentName')), '-as')]",
+      "hostName": "[concat('eshoponweb-', toLower(parameters('environmentName')), '.duckdns.org')]",
+      "certificateName": "[concat('eshoponweb-', toLower(parameters('environmentName')), '-ssl-cert')]",
+      "keyVaultId": "[concat('/subscriptions/',parameters('keyVaultSubscriptionId'),'/resourceGroups/',parameters('keyVaultResourceGroupName'),'/providers/Microsoft.KeyVault/vaults/',parameters('keyVaultName'))]"
+  },
+  "resources": [
+      {
+      "apiVersion": "2018-02-01",
+      "type": "Microsoft.Web/serverfarms",
+      "kind": "app",
+      "name": "[variables('appServicePlanName')]",
+      "location": "[parameters('location')]",
+      "properties": {},
+      "dependsOn": [],
+      "sku": {
+        "name": "[parameters('sku')]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('appServiceName')]",
+      "apiVersion": "2016-03-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      ],
+      "properties": {
+        "name": "[variables('appServiceName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',variables('appServicePlanName'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/certificates",
+      "name": "[variables('certificateName')]",
+      "apiVersion": "2016-03-01",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]"
+      ],
+      "properties": {
+        "keyVaultId": "[variables('keyVaultId')]",
+        "keyVaultSecretName": "[parameters('existingKeyVaultSecretName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+      }
+    }
+  ]
+}

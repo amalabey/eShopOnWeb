@@ -1,0 +1,21 @@
+{
+   "$schema":"https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+   "contentVersion":"1.0.0.0",
+   "parameters":{
+      "keyVaultSubscriptionId":{
+         "value":"f516f70b-8870-404d-aa5a-153e929ce9c4"
+      },
+      "keyVaultResourceGroupName": {
+         "value": "eshoponweb-infra-rg"
+      },
+      "keyVaultName": {
+         "value": "eshoponweb-vault"
+      },
+      "existingKeyVaultSecretName":{
+         "value":"eshoponweb-staging"
+      },
+      "environmentName": {
+         "value": "staging"
+      }
+   }
+}
