@@ -11,5 +11,5 @@ variables:
 
 steps:
   - template: templates/build-steps.yml
-      parameters:
-        buildConfiguration: 'Release'
+    parameters:
+      buildConfiguration: 'Release'
