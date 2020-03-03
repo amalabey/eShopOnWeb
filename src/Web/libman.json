@@ -7,7 +7,7 @@
       "destination": "wwwroot/lib/jquery/"
     },
     {
-      "provider": "unpkg",
+      "provider": "jsdelivr",
       "library": "bootstrap@3.3.7",
       "files": [
         "dist/css/bootstrap.css",
