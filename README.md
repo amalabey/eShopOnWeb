@@ -99,3 +99,4 @@ You can also run the Web application by using the instructions located in its `D
 ## Change list
 1. popularity sort api changes
 2. Test whitesource integration
+3. Test whitesource integration via PR
