@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <ProjectGuid>{649231f6-63fa-4af1-a11f-a61aef02b0f7}</ProjectGuid>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Microsoft.eShopWeb.IntegrationTests</RootNamespace>
     <IsPackable>false</IsPackable>
