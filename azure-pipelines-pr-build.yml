@@ -13,3 +13,6 @@ steps:
   - template: templates/build-steps.yml
     parameters:
       buildConfiguration: 'Release'
+  - task: WhiteSource Bolt@20
+    inputs:
+      cwd: '$(System.DefaultWorkingDirectory)'
