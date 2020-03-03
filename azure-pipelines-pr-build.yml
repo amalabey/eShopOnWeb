@@ -10,9 +10,17 @@ variables:
   solution: 'eShopOnWeb.sln'
 
 steps:
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'sonarcloudeshop'
+      organization: 'amalabey-github'
+      scannerMode: 'MSBuild'
+      projectKey: 'amalabey.eshop.visualstudio.com'
+      projectName: 'eShop'
   - template: templates/build-steps.yml
     parameters:
       buildConfiguration: 'Release'
+  - task: SonarCloudAnalyze@1
   - task: WhiteSource Bolt@20
     inputs:
       cwd: '$(System.DefaultWorkingDirectory)'
