@@ -49,11 +49,15 @@ stages:
               Contents: '**\bin\$(BuildConfiguration)\*.dacpac'
               flattenFolders: true
               TargetFolder: '$(build.artifactStagingDirectory)\sql'
+
           - task: PowerShell@2
             displayName: "Deploy dacpac to localdb"
             inputs:
               targetType: 'inline'
-              script: 'sqlpackage.exe "/action:publish" "/TargetFile:$(build.artifactStagingDirectory)/sql/Database.dacpac" "/SourceConnectionString:Server=(localdb)\MSSQLLocalDB;Database=eShopDb;Trusted_Connection=True;"'
+              script: 'sqlpackage.exe 
+          - task: CmdLine@2
+            inputs:
+              script: '"C:\Program Files (x86)\Microsoft SQL Server\140\Dac\bin\SqlPackage.exe" "/action:publish" "/TargetFile:$(build.artifactStagingDirectory)/sql/Database.dacpac" "/SourceConnectionString:Server=(localdb)\MSSQLLocalDB;Database=eShopDb;Trusted_Connection=True;"''
           - task: PublishBuildArtifacts@1
             displayName: 'publish web-site'
             inputs:
