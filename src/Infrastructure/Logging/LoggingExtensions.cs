@@ -17,6 +17,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Logging
                 .ReadFrom.Configuration(configuration)
                 .CreateLogger();
 
+            services.AddScoped<Serilog.Core.Logger>(sp => logger);
             services.AddScoped(typeof(IAppLogger<>), typeof(SerilogLoggerAdapter<>));
         }
     }
