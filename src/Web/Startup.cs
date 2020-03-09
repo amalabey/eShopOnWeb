@@ -86,7 +86,12 @@ namespace Microsoft.eShopWeb.Web
             services.AddScoped<ICatalogItemViewModelService, CatalogItemViewModelService>();
             services.Configure<CatalogSettings>(Configuration);
             services.AddSingleton<IUriComposer>(new UriComposer(Configuration.Get<CatalogSettings>()));
-            services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+
+            // Register logging
+            //services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+            services.RegisterInstrumentation(this.Configuration);
+
+
             services.AddTransient<IEmailSender, EmailSender>();
 
             // Add memory cache services
