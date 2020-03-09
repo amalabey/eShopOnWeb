@@ -68,10 +68,15 @@ stages:
             inputs:
               pathtoPublish: '$(System.DefaultWorkingDirectory)\sql' 
               artifactName: 'eshoponweb-sql'
+  - stage: 'Dev'
+    jobs:
+      - template: templates/deployment-job.yml
+        parameters:
+          environmentName: 'aadev'
+          azureSubscription: 'azure-vs-enterprise'
   - stage: 'Staging'
     jobs:
       - template: templates/deployment-job.yml
         parameters:
           environmentName: 'staging'
           azureSubscription: 'azure-vs-enterprise'
-          
