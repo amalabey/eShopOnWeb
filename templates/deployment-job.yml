@@ -56,4 +56,4 @@ jobs:
               appType: 'webApp'
               WebAppName: 'eshoponweb-${{ parameters.environmentName }}-as'
               packageForLinux: '$(Pipeline.Workspace)/eshoponweb-site/Web.zip'
-              AppSettings: '-ConnectionStrings.CatalogConnection "$(catalogConnectionString)" -ConnectionStrings.IdentityConnection "$(identityConnectionString)"'
+              JSONFiles: 'appsettings.json'

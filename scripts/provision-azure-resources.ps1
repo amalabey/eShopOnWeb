@@ -58,10 +58,10 @@ az sql db create --server $sqlServerName --resource-group $resourceGroupName --n
 $catalogConnectionString=$(az sql db show-connection-string --name $catalogDbName --server $sqlServerName --client ado.net --output tsv)
 $catalogConnectionString = $catalogConnectionString -replace "<username>",$SqlAdminUserName
 $catalogConnectionString = $catalogConnectionString -replace "<password>",$SqlAdminPassword
-Write-Host "##vso[task.setvariable variable=catalogConnectionString]$($catalogConnectionString)"
+Write-Host "##vso[task.setvariable variable=ConnectionStrings.CatalogConnection]$($catalogConnectionString)"
 
 # Get connection string for the identity database
 $identityConnectionString=$(az sql db show-connection-string --name $identityDbName --server $sqlServerName --client ado.net --output tsv)
 $identityConnectionString = $identityConnectionString -replace "<username>",$SqlAdminUserName
 $identityConnectionString = $identityConnectionString -replace "<password>",$SqlAdminPassword
-Write-Host "##vso[task.setvariable variable=identityConnectionString]$($identityConnectionString)"
+Write-Host "##vso[task.setvariable variable=ConnectionStrings.IdentityConnection]$($identityConnectionString)"
