@@ -42,17 +42,17 @@ stages:
               publishWebProjects: True
               arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
               zipAfterPublish: True
-          - task: CopyFiles@2
-            displayName: Copy Dacpac
-            inputs:
-              SourceFolder: '$(System.DefaultWorkingDirectory)'
-              Contents: '**\bin\$(BuildConfiguration)\*.dacpac'
-              flattenFolders: true
-              TargetFolder: '$(build.artifactStagingDirectory)\sql'
-          - task: CmdLine@2
-            displayName: "Deploy dacpac to localdb"
-            inputs:
-              script: '"C:\Program Files (x86)\Microsoft SQL Server\140\Dac\bin\SqlPackage.exe" "/action:publish" "/TargetFile:$(build.artifactStagingDirectory)/sql/Database.dacpac" "/SourceConnectionString:Server=(localdb)\MSSQLLocalDB;Database=eShopDb;Trusted_Connection=True;"'
+          # - task: CopyFiles@2
+          #   displayName: Copy Dacpac
+          #   inputs:
+          #     SourceFolder: '$(System.DefaultWorkingDirectory)'
+          #     Contents: '**\bin\$(BuildConfiguration)\*.dacpac'
+          #     flattenFolders: true
+          #     TargetFolder: '$(build.artifactStagingDirectory)\sql'
+          # - task: CmdLine@2
+          #   displayName: "Deploy dacpac to localdb"
+          #   inputs:
+          #     script: '"C:\Program Files (x86)\Microsoft SQL Server\140\Dac\bin\SqlPackage.exe" "/action:publish" "/TargetFile:$(build.artifactStagingDirectory)/sql/Database.dacpac" "/SourceConnectionString:Server=(localdb)\MSSQLLocalDB;Database=eShopDb;Trusted_Connection=True;"'
           - task: PublishBuildArtifacts@1
             displayName: 'publish web-site'
             inputs:
