@@ -1,9 +1,26 @@
 version: '3.4'
-
 services:
+  eshopdb:
+    image: ${DOCKER_REGISTRY-}eshopdb
+    build: 
+      context: .
+      dockerfile: src/Infrastructure/Dockerfile
+    environment: 
+      - SA_PASSWORD=Your_password123
+    ports: 
+      - "1433:1433"
   eshopwebmvc:
     image: ${DOCKER_REGISTRY-}eshopwebmvc
     build:
       context: .
       dockerfile: src/Web/Dockerfile
-
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - 'ConnectionStrings:CatalogConnection=Server=eshopdb;Database=CatalogDb;User=sa;Password=Your_password123;'
+      - 'ConnectionStrings:IdentityConnection=Server=eshopdb;Database=IdentityDb;User=sa;Password=Your_password123;'
+    ports:
+      - "5106:80"
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https:ro
+      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
