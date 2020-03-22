@@ -4,7 +4,7 @@ WORKDIR /app
 COPY *.sln .
 COPY . .
 
-RUN dotnet tool install --global dotnet-ef
+RUN dotnet tool install --global dotnet-ef --version 3.1.1
 ENV PATH="${PATH}:/root/.dotnet/tools"
 
 RUN dotnet restore src/Infrastructure/Infrastructure.csproj
