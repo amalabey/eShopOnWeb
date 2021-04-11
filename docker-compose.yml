@@ -1,9 +1,14 @@
-version: '3.4'
-
+version: '3'
 services:
   eshopwebmvc:
-    image: ${DOCKER_REGISTRY-}eshopwebmvc
+    image: amalabey/eshopweb:v1.1
     build:
       context: .
       dockerfile: src/Web/Dockerfile
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: eshop-ecscluster
+        awslogs-region: ap-southeast-2
+        awslogs-stream-prefix: eshopweb
 
