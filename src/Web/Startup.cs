@@ -124,7 +124,7 @@ namespace Microsoft.eShopWeb.Web
                 config.Path = "/allservices";
             });
 
-            ConfigureProductionServices(services);
+            ConfigureInMemoryDatabases(services);
 
             _services = services; // used to debug registered services
         }
