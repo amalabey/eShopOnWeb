@@ -30,9 +30,12 @@ namespace Microsoft.eShopWeb.Web
     public class Startup
     {
         private IServiceCollection _services;
-        public Startup(IConfiguration configuration)
+        private IWebHostEnvironment _env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -129,7 +132,14 @@ namespace Microsoft.eShopWeb.Web
                 config.Path = "/allservices";
             });
 
-            ConfigureProductionServices(services);
+            if(_env.IsDevelopment())
+            {
+                ConfigureInMemoryDatabases(services);
+            }
+            else
+            {
+                ConfigureProductionServices(services);
+            }
 
             _services = services; // used to debug registered services
         }
