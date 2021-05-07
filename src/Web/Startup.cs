@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
+using MySql.Data.EntityFrameworkCore;
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -45,7 +46,7 @@ namespace Microsoft.eShopWeb.Web
             // use in-memory database
             services.AddDbContext<CatalogContext>(c =>
                 c.UseInMemoryDatabase("Catalog"));
-
+            
             // Add Identity DbContext
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase("Identity"));
@@ -54,10 +55,10 @@ namespace Microsoft.eShopWeb.Web
         private void ConfigureProductionServices(IServiceCollection services)
         {
             var catalogConnStr = Configuration.GetConnectionString("CatalogConnection");  
-            services.AddDbContext<CatalogContext>(options => options.UseMySql(catalogConnStr, ServerVersion.AutoDetect(catalogConnStr)));
+            services.AddDbContext<CatalogContext>(options => options.UseMySQL(catalogConnStr));
 
             var identityConnStr = Configuration.GetConnectionString("IdentityConnection");  
-            services.AddDbContext<IdentityContext>(options => options.UseMySql(identityConnStr, ServerVersion.AutoDetect(identityConnStr)));
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseMySQL(identityConnStr));
         }
 
         public void ConfigureTestingServices(IServiceCollection services)
