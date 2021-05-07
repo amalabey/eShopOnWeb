@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.eShopWeb.Infrastructure.Data;
 using Microsoft.eShopWeb.Infrastructure.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -43,8 +44,16 @@ namespace Microsoft.eShopWeb.Web
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+            {
+                webBuilder.UseStartup<Startup>();
+            })
+            .ConfigureAppConfiguration((hostingContext, config) => {
+                var env = hostingContext.HostingEnvironment;
+                config.AddJsonFile("appsettings.json", optional: true)
+                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                config.AddEnvironmentVariables();
+            });
+
+
     }
 }
