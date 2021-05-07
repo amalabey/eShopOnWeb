@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.eShopWeb.ApplicationCore.Interfaces;
 using Microsoft.eShopWeb.ApplicationCore.Services;
 using Microsoft.eShopWeb.Infrastructure.Data;
@@ -24,7 +23,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
-using MySql.Data.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+
 
 namespace Microsoft.eShopWeb.Web
 {
@@ -55,10 +56,12 @@ namespace Microsoft.eShopWeb.Web
         private void ConfigureProductionServices(IServiceCollection services)
         {
             var catalogConnStr = Configuration.GetConnectionString("CatalogConnection");  
-            services.AddDbContext<CatalogContext>(options => options.UseMySQL(catalogConnStr));
+            services.AddDbContext<CatalogContext>(options => options.UseMySql(catalogConnStr)
+                                                                    .EnableDetailedErrors());
 
             var identityConnStr = Configuration.GetConnectionString("IdentityConnection");  
-            services.AddDbContext<AppIdentityDbContext>(options => options.UseMySQL(identityConnStr));
+            services.AddDbContext<AppIdentityDbContext>(options => options.UseMySql(identityConnStr)
+                                                                           .EnableDetailedErrors());
         }
 
         public void ConfigureTestingServices(IServiceCollection services)

@@ -7,30 +7,31 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.eShopWeb.Infrastructure.Data;
 
-namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
+namespace Microsoft.eShopWeb.Infrastructure.Migrations.Catalog
 {
     [DbContext(typeof(CatalogContext))]
-    [Migration("20190601014740_UpdatingDefaultDataTypes")]
-    partial class UpdatingDefaultDataTypes
+    [Migration("20210507044609_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("ProductVersion", "3.1.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
                 .HasAnnotation("Relational:Sequence:.catalog_brand_hilo", "'catalog_brand_hilo', '', '1', '10', '', '', 'Int64', 'False'")
-                .HasAnnotation("Relational:Sequence:.catalog_hilo", "'catalog_hilo', '', '1', '10', '', '', 'Int64', 'False'")
-                .HasAnnotation("Relational:Sequence:.catalog_type_hilo", "'catalog_type_hilo', '', '1', '10', '', '', 'Int64', 'False'")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:Sequence:.catalog_hilo", "'catalog_hilo', '', '1', '10', '', '', 'Int64', 'False'");
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate.Basket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<string>("BuyerId");
+                    b.Property<string>("BuyerId")
+                        .IsRequired()
+                        .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
+                        .HasMaxLength(40);
 
                     b.HasKey("Id");
 
@@ -41,13 +42,16 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<int?>("BasketId");
+                    b.Property<int>("BasketId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("CatalogItemId");
+                    b.Property<int>("CatalogItemId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("Quantity");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
@@ -63,36 +67,44 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:HiLoSequenceName", "catalog_brand_hilo")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<string>("Brand")
                         .IsRequired()
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
 
-                    b.ToTable("CatalogBrand");
+                    b.ToTable("CatalogBrands");
                 });
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.CatalogItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:HiLoSequenceName", "catalog_hilo")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
-                    b.Property<int>("CatalogBrandId");
+                    b.Property<int>("CatalogBrandId")
+                        .HasColumnType("int");
 
-                    b.Property<int>("CatalogTypeId");
+                    b.Property<int>("CatalogTypeId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                         .HasMaxLength(50);
 
-                    b.Property<string>("PictureUri");
+                    b.Property<string>("PictureUri")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -110,27 +122,29 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:HiLoSequenceName", "catalog_type_hilo")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
+                        .HasColumnType("int");
 
                     b.Property<string>("Type")
                         .IsRequired()
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .HasMaxLength(100);
 
                     b.HasKey("Id");
 
-                    b.ToTable("CatalogType");
+                    b.ToTable("CatalogTypes");
                 });
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<string>("BuyerId");
+                    b.Property<string>("BuyerId")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<DateTimeOffset>("OrderDate");
+                    b.Property<DateTimeOffset>("OrderDate")
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -141,14 +155,16 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<int?>("OrderId");
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Units");
+                    b.Property<int>("Units")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -159,9 +175,11 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate.BasketItem", b =>
                 {
-                    b.HasOne("Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate.Basket")
+                    b.HasOne("Microsoft.eShopWeb.ApplicationCore.Entities.BasketAggregate.Basket", null)
                         .WithMany("Items")
-                        .HasForeignKey("BasketId");
+                        .HasForeignKey("BasketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.CatalogItem", b =>
@@ -169,12 +187,14 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                     b.HasOne("Microsoft.eShopWeb.ApplicationCore.Entities.CatalogBrand", "CatalogBrand")
                         .WithMany()
                         .HasForeignKey("CatalogBrandId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Microsoft.eShopWeb.ApplicationCore.Entities.CatalogType", "CatalogType")
                         .WithMany()
                         .HasForeignKey("CatalogTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.Order", b =>
@@ -182,67 +202,69 @@ namespace Microsoft.eShopWeb.Infrastructure.Data.Migrations
                     b.OwnsOne("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.Address", "ShipToAddress", b1 =>
                         {
                             b1.Property<int>("OrderId")
-                                .ValueGeneratedOnAdd()
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                                .HasColumnType("int");
 
                             b1.Property<string>("City")
                                 .IsRequired()
+                                .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                                 .HasMaxLength(100);
 
                             b1.Property<string>("Country")
                                 .IsRequired()
+                                .HasColumnType("varchar(90) CHARACTER SET utf8mb4")
                                 .HasMaxLength(90);
 
                             b1.Property<string>("State")
+                                .HasColumnType("varchar(60) CHARACTER SET utf8mb4")
                                 .HasMaxLength(60);
 
                             b1.Property<string>("Street")
                                 .IsRequired()
+                                .HasColumnType("varchar(180) CHARACTER SET utf8mb4")
                                 .HasMaxLength(180);
 
                             b1.Property<string>("ZipCode")
                                 .IsRequired()
+                                .HasColumnType("varchar(18) CHARACTER SET utf8mb4")
                                 .HasMaxLength(18);
 
                             b1.HasKey("OrderId");
 
                             b1.ToTable("Orders");
 
-                            b1.HasOne("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.Order")
-                                .WithOne("ShipToAddress")
-                                .HasForeignKey("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.Address", "OrderId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.WithOwner()
+                                .HasForeignKey("OrderId");
                         });
                 });
 
             modelBuilder.Entity("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.OrderItem", b =>
                 {
-                    b.HasOne("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.Order")
+                    b.HasOne("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.Order", null)
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId");
 
                     b.OwnsOne("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.CatalogItemOrdered", "ItemOrdered", b1 =>
                         {
                             b1.Property<int>("OrderItemId")
-                                .ValueGeneratedOnAdd()
-                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                                .HasColumnType("int");
 
-                            b1.Property<int>("CatalogItemId");
+                            b1.Property<int>("CatalogItemId")
+                                .HasColumnType("int");
 
-                            b1.Property<string>("PictureUri");
+                            b1.Property<string>("PictureUri")
+                                .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                             b1.Property<string>("ProductName")
                                 .IsRequired()
+                                .HasColumnType("varchar(50) CHARACTER SET utf8mb4")
                                 .HasMaxLength(50);
 
                             b1.HasKey("OrderItemId");
 
                             b1.ToTable("OrderItems");
 
-                            b1.HasOne("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.OrderItem")
-                                .WithOne("ItemOrdered")
-                                .HasForeignKey("Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate.CatalogItemOrdered", "OrderItemId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.WithOwner()
+                                .HasForeignKey("OrderItemId");
                         });
                 });
 #pragma warning restore 612, 618
