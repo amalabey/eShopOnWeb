@@ -52,6 +52,7 @@ namespace Microsoft.eShopWeb.Web
                 config.AddJsonFile("appsettings.json", optional: true)
                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
                 config.AddEnvironmentVariables();
+                config.AddSystemsManager("/eshopweb", true);
             });
 
 
