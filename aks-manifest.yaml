@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshopdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eshopdb
+  template:
+    metadata:
+      labels:
+        app: eshopdb
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: eshopdb
+        image: az303aksacr.azurecr.io/eshop/eshopdb:latest
+        env:
+        - name: SA_PASSWORD
+          value: "Your_password123"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 1433
+          name: sql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eshopdb
+spec:
+  ports:
+  - port: 1433
+  selector:
+    app: eshopdb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eshopweb
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: eshopweb
+  template:
+    metadata:
+      labels:
+        app: eshopweb
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: eshopweb
+        image: az303aksacr.azurecr.io/eshop/eshopwebmvc:latest
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_URLS
+          value: "http://+:80"
+        - name: "ConnectionStrings:CatalogConnection"
+          value: ""
+        - name: REDIS
+          value: "azure-vote-back"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-vote-front
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: azure-vote-front
