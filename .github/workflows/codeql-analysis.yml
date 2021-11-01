@@ -27,6 +27,7 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
+        config-file: ./.github/codeql/codeql-config.yml
         languages: javascript, csharp
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
