@@ -2,7 +2,7 @@
  * @name High Cyclomatic Complexity
  * @kind problem
  * @problem.severity warning
- * @id csharp/example/empty-block
+ * @id eshoponweb/eshop-codeql/cyclomatic-complexity
  */
 
 import csharp

@@ -1,8 +1,8 @@
 /**
- * @name Empty block
+ * @name Error prone Enum.TryParse
  * @kind problem
  * @problem.severity warning
- * @id csharp/example/empty-block
+ * @id eshoponweb/eshop-codeql/enum-tryparse
  */
 
 import csharp
