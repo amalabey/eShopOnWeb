@@ -1,3 +1,4 @@
 name: "eShop CodeQl config"
 queries:
   - uses: security-and-quality
+  - uses: ./eshop-codeql
