@@ -70,6 +70,12 @@ namespace Microsoft.eShopWeb.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Trigger a codeql issue
+            Console.WriteLine(Enum.TryParse(typeof(HealthStatus),
+                                            "test",
+                                            true,
+                                            out var result));
+
             ConfigureCookieSettings(services);
 
             CreateIdentityIfNotCreated(services);
